@@ -4,19 +4,21 @@ dotenv.config()
 
 import app from '../app.js'
 
-const { DB_HOST, PORT } = process.env
+const PORT = process.env.PORT || 3030
+const uriDb = process.env.DB_HOST
 
-if (!DB_HOST) {
+if (!uriDb) {
   throw new Error('DB_HOST is not defined')
 }
 
 mongoose
-  .connect(DB_HOST)
+  .connect(uriDb)
   .then(() => {
-    console.log('Database connection successful')
-    app.listen(PORT || 3030)
+    app.listen(PORT, () => {
+      console.log(`Server running on port: ${PORT}`)
+    })
   })
-  .catch((error) => {
-    console.log(error.message)
+  .catch((err) => {
+    console.log(`Server not running. Error message: ${err.message}`)
     process.exit(1)
   })
