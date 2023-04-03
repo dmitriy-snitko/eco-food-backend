@@ -1,4 +1,4 @@
-export type Error = {
+export type IError = {
   status: number
   message: string
 }
