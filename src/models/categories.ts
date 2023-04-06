@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Model, model } from 'mongoose'
 import { ICategories } from 'types/index.js'
 
 const categoriesSchema: Schema = new Schema({
@@ -20,4 +20,4 @@ const categoriesSchema: Schema = new Schema({
   },
 })
 
-export const Categories = model<ICategories>('categories', categoriesSchema)
+export const Categories: Model<ICategories> = model<ICategories>('Categories', categoriesSchema)
