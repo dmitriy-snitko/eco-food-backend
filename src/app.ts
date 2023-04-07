@@ -3,6 +3,8 @@ import cors from 'cors'
 import { IError } from 'types/index.js'
 import categoriesRouter from './routes/api/categories.js'
 import productsRouter from './routes/api/products.js'
+import swaggerUI from 'swagger-ui-express'
+import swaggerDocument from './swagger/swaggerDocument.json' assert { type: 'json' }
 
 const app = express()
 
@@ -12,6 +14,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/api/categories', categoriesRouter)
 app.use('/api/products', productsRouter)
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({

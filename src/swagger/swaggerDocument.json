@@ -1,0 +1,326 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Eco-Shoop OpenApi specification",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://eco-food-backend-production.up.railway.app/api/",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3030/api/",
+      "description": "Dev server"
+    }
+  ],
+  "paths": {
+    "/categories": {
+      "get": {
+        "summary": "Method for getting a list of categories",
+        "tags": [
+          "Categories"
+        ],
+        "operationId": "getAllCategories",
+        "responses": {
+          "200": {
+            "description": "Successful response with list of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Categories"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{category_url}": {
+      "get": {
+        "summary": "Method to get one category by url",
+        "tags": [
+          "Categories"
+        ],
+        "operationId": "getCategoryByUrl",
+        "parameters": [
+          {
+            "name": "category_url",
+            "in": "path",
+            "required": true,
+            "description": "Url of Category",
+            "schema": {
+              "type": "string"
+            },
+            "example": "dried-fruits"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with one category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Method to get a list of all products",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "Successful response with product list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{category_url}": {
+      "get": {
+        "summary": "Method for getting a products list in a category",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "getProductsByCategory",
+        "parameters": [
+          {
+            "name": "category_url",
+            "in": "path",
+            "required": true,
+            "description": "Url of Category",
+            "schema": {
+              "type": "string"
+            },
+            "example": "dried-fruits"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with product list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        }
+      }
+    },
+    "/products/{category_url}/{product_url}": {
+      "get": {
+        "summary": "Method to get one product by url",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "getOneProduct",
+        "parameters": [
+          {
+            "name": "category_url",
+            "in": "path",
+            "required": true,
+            "description": "Url of Category",
+            "schema": {
+              "type": "string"
+            },
+            "example": "dried-fruits"
+          },
+          {
+            "name": "product_url",
+            "in": "path",
+            "required": true,
+            "description": "Url of Product",
+            "schema": {
+              "type": "string"
+            },
+            "example": "dried-apricots-elegant"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with product list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category or product not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64303d85e42ee57de3e9e125"
+          },
+          "name": {
+            "type": "string",
+            "example": "Dried fruits"
+          },
+          "url": {
+            "type": "string",
+            "example": "dried-fruits"
+          },
+          "description": {
+            "type": "string",
+            "example": "Example description of category"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://cdn.shopify.com/collections/image.png"
+          }
+        }
+      },
+      "Categories": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Category"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "url",
+          "price",
+          "size",
+          "availability",
+          "composition",
+          "categories",
+          "brand",
+          "country",
+          "form",
+          "delivery"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "642dda4fe42ee57de3e9e0ca"
+          },
+          "name": {
+            "type": "string",
+            "example": "Dried Apricots - Elegant"
+          },
+          "url": {
+            "type": "string",
+            "example": "dried-apricots-elegant"
+          },
+          "price": {
+            "type": "number",
+            "example": 11
+          },
+          "oldPrice": {
+            "type": "number",
+            "example": 12.35
+          },
+          "size": {
+            "type": "number",
+            "example": 500
+          },
+          "availability": {
+            "type": "boolean",
+            "example": true
+          },
+          "description": {
+            "type": "string",
+            "example": "Product description"
+          },
+          "composition": {
+            "type": "string",
+            "example": "Dried apricots"
+          },
+          "vitamins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "A, E, C, B3, B5, B6, β"
+            }
+          },
+          "minerals": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Si, Co, Cr, Mg, Cu"
+            }
+          },
+          "nutritionalValue": {
+            "type": "number",
+            "example": 241
+          },
+          "image": {
+            "type": "string",
+            "example": "https://cdn.shopify.com/collections/image.png"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "dried-fruits"
+            }
+          },
+          "brand": {
+            "type": "string",
+            "example": "Ayoub`s"
+          },
+          "country": {
+            "type": "string",
+            "example": "Canada"
+          },
+          "form": {
+            "type": "string",
+            "enum": [
+              "prepackaged",
+              "on weight"
+            ]
+          },
+          "delivery": {
+            "type": "string",
+            "example": "delivery 1-2 days"
+          }
+        }
+      },
+      "Products": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Product"
+        }
+      }
+    }
+  }
+}

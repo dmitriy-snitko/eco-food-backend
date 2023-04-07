@@ -2,12 +2,12 @@ import { Schema, Model, model } from 'mongoose'
 import { ICategories } from 'types/index.js'
 
 const categoriesSchema: Schema = new Schema({
-  url: {
+  name: {
     type: String,
     unique: true,
     required: true,
   },
-  title: {
+  url: {
     type: String,
     unique: true,
     required: true,
