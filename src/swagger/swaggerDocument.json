@@ -316,9 +316,54 @@
         }
       },
       "Products": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Product"
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "filter": {
+            "$ref": "#/components/schemas/Filter"
+          }
+        }
+      },
+      "Filter": {
+        "type": "object",
+        "required": [
+          "price",
+          "brands",
+          "countrys"
+        ],
+        "properties": {
+          "price": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "example": 4.95
+              },
+              "max": {
+                "type": "number",
+                "example": 14
+              }
+            }
+          },
+          "brands": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "The Nut Market, Ayoub`s"
+            }
+          },
+          "countrys": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Australia, Canada"
+            }
+          }
         }
       }
     }
