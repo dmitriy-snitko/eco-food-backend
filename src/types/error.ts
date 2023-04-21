@@ -1,4 +1,4 @@
-export type IError = {
-  status: number
-  message: string
+export interface IError extends Error {
+  code?: number
+  status?: number
 }

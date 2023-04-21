@@ -1,30 +1,40 @@
-import createError from 'http-errors'
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import * as service from '../services/index.js'
 import { sendSuccessRes, getFilter } from '../helpers/index.js'
+import { ctrlWrapper } from '../helpers/index.js'
+import { HttpError } from '../helpers/index.js'
+import { IReview } from 'types/review.js'
 
-export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
-  const data = await service.findAllProducts()
-  sendSuccessRes(res, data)
-}
-
-export const getProductsByCategory = async (req: Request, res: Response, next: NextFunction) => {
-  const { category } = req.params
-  if (!(await service.findCategoryByUrl(category)))
-    return next(createError(404, `Category whith url: '${category}' not found.`))
-
-  const data = await service.findProductsByCategory(category)
-  if (!data.length) return sendSuccessRes(res, data, 200, `Category '${category}' is empty`)
-
+const getAllProducts = async (req: Request, res: Response) => {
+  const { page = 1, limit = 20 }: { page?: number; limit?: number } = req.query
+  const skip = (page - 1) * limit
+  const data = await service.findAllProducts(skip, limit)
   sendSuccessRes(res, { products: data, filter: getFilter(data) })
 }
 
-export const getOneProduct = async (req: Request, res: Response, next: NextFunction) => {
-  const { category, product } = req.params
-  if (!(await service.findCategoryByUrl(category)))
-    return next(createError(404, `Category whith url: '${category}' not found.`))
-  const data = await service.findOneProduct(category, product)
-  if (!data) return next(createError(404, `Product '${product}' not found.`))
+const getProductsByCategory = async (req: Request, res: Response) => {
+  const { categoryUrl } = req.params
+  if (!(await service.findCategoryByUrl(categoryUrl))) {
+    throw HttpError(404, `Category whith url: '${categoryUrl}' not found.`)
+  }
+  const { page = 1, limit = 20 }: { page?: number; limit?: number } = req.query
+  const skip = (page - 1) * limit
+  const products = await service.findProductsByCategory(categoryUrl, skip, limit)
+  sendSuccessRes(res, { products, filter: getFilter(products) })
+}
 
-  sendSuccessRes(res, data)
+const getOneProduct = async (req: Request, res: Response) => {
+  const { productUrl } = req.params
+  const product = await service.findOneProduct(productUrl)
+  if (!product) {
+    throw HttpError(404, `Product '${productUrl}' not found.`)
+  }
+  const reviews = await service.findReviewsByProduct(productUrl)
+  sendSuccessRes(res, { product, reviews })
+}
+
+export default {
+  getAllProducts: ctrlWrapper(getAllProducts),
+  getProductsByCategory: ctrlWrapper(getProductsByCategory),
+  getOneProduct: ctrlWrapper(getOneProduct),
 }

@@ -1,8 +1,8 @@
 import { Document } from 'mongoose'
 
-export interface ICategories extends Document {
+export interface ICategory extends Document {
   url: string
-  title: string
+  name: string
   description: string
   image: string
 }

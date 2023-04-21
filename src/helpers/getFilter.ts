@@ -1,6 +1,6 @@
-import { IProducts } from '../types/products.js'
+import { IProduct } from '../types/product.js'
 
-export const getFilter = (data: IProducts[]) => {
+export const getFilter = (data: IProduct[]) => {
   const sortedPrise = data.sort((a, b) => a.price - b.price).map((i) => i.price)
 
   const price = {

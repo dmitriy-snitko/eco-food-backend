@@ -1,18 +1,18 @@
 import mongoose from 'mongoose'
+import app from '../app.js'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import app from '../app.js'
+const { DB_HOST, PORT = 3030 } = process.env
 
-const PORT = process.env.PORT || 3030
-const uriDb = process.env.DB_HOST
-
-if (!uriDb) {
+if (!DB_HOST) {
   throw new Error('DB_HOST is not defined')
 }
 
+mongoose.set('strictQuery', true)
+
 mongoose
-  .connect(uriDb)
+  .connect(DB_HOST)
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running on port: ${PORT}`)

@@ -1,10 +1,9 @@
 import { Router } from 'express'
-import * as ctrl from '../../controllers/categories.js'
-import catchHandler from '../../middleware/catchHandler.js'
+import ctrl from '../../controllers/categories.js'
 
-const categoriesRouter = Router()
+const router = Router()
 
-categoriesRouter.get('/', catchHandler(ctrl.getAllCategories))
-categoriesRouter.get('/:category', catchHandler(ctrl.getCategoryByUrl))
+router.get('/', ctrl.getAllCategories)
+router.get('/:categoryUrl', ctrl.getCategoryByUrl)
 
-export default categoriesRouter
+export default router

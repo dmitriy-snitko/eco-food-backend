@@ -1,3 +1,5 @@
 export * from './error.js'
-export * from './categories.js'
-export * from './products.js'
+export * from './category.js'
+export * from './product.js'
+export * from './user.js'
+export * from './review.js'
