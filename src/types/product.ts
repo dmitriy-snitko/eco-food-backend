@@ -1,4 +1,5 @@
 import { Document } from 'mongoose'
+import { IBrand, ICountry, IForm, IAvailability, IDelivery } from './index.js'
 
 export interface IProduct extends Document {
   name: string
@@ -6,7 +7,7 @@ export interface IProduct extends Document {
   price: number
   oldPrice: number
   size: number
-  availability: boolean
+  availability: IAvailability
   description: string
   composition: string
   minerals: [string]
@@ -14,8 +15,8 @@ export interface IProduct extends Document {
   nutritionalValue: number
   image: string
   categories: [string]
-  brand: string
-  country: string
-  form: 'prepackaged' | 'on weight'
-  delivery: string
+  brand: IBrand
+  country: ICountry
+  form: IForm
+  delivery: IDelivery
 }

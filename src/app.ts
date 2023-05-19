@@ -1,10 +1,15 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import { IError } from 'types/index.js'
-import categoriesRouter from './routes/api/categories.js'
-import productsRouter from './routes/api/products.js'
+import categoriesRouter from './routes/api/category.js'
+import productsRouter from './routes/api/product.js'
 import authRouter from './routes/api/auth.js'
 import reviewRouter from './routes/api/review.js'
+import brandRouter from './routes/api/brand.js'
+import countryRouter from './routes/api/country.js'
+import formRouter from './routes/api/form.js'
+import availabilityRouter from './routes/api/availability.js'
+import deliveryRouter from './routes/api/delivery.js'
 import swaggerUI from 'swagger-ui-express'
 import swaggerDocument from './swagger/swaggerDocument.json' assert { type: 'json' }
 
@@ -18,6 +23,11 @@ app.use('/api/auth', authRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/reviews', reviewRouter)
+app.use('/api/brands', brandRouter)
+app.use('/api/countrys', countryRouter)
+app.use('/api/form', formRouter)
+app.use('/api/availability', availabilityRouter)
+app.use('/api/delivery', deliveryRouter)
 app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.use((req: Request, res: Response) => {

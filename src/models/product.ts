@@ -26,7 +26,8 @@ const productSchema = new Schema<IProduct>(
       required: [true, 'Size is required'],
     },
     availability: {
-      type: Boolean,
+      type: Schema.Types.ObjectId,
+      ref: 'availability',
       required: [true, 'You need to indicate the availability of goods'],
     },
     description: { type: String },
@@ -40,23 +41,26 @@ const productSchema = new Schema<IProduct>(
     image: { type: String },
     categories: {
       type: [String],
-      required: true,
+      required: [true, 'Specify the category of the product'],
     },
     brand: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'brand',
       required: [true, 'Specify the brand of the product'],
     },
     country: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'country',
       required: [true, 'Specify the country of manufacture'],
     },
     form: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'form',
       required: [true, 'Form is required'],
-      enum: ['Prepackaged', 'On weight'],
     },
     delivery: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'delivery',
       required: [true, 'Specify delivery method'],
     },
   },
