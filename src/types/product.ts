@@ -19,4 +19,5 @@ export interface IProduct extends Document {
   country: ICountry
   form: IForm
   delivery: IDelivery
+  rating: number
 }

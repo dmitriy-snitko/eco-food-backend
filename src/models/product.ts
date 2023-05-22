@@ -63,6 +63,10 @@ const productSchema = new Schema<IProduct>(
       ref: 'delivery',
       required: [true, 'Specify delivery method'],
     },
+    rating: {
+      type: Number,
+      default: 0,
+    }
   },
   { versionKey: false, timestamps: true },
 )

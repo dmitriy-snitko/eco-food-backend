@@ -110,3 +110,7 @@ export const findOneProduct = async (product: string) => {
   const query = Product.findOne({ url: product })
   return await populateProduct(query)
 }
+
+export const updateRating = async(product: string, rating: number) => {
+  return Product.updateOne({url: String(product)}, {$set: {rating}})
+}
