@@ -19,6 +19,7 @@ const register = async (req: Request, res: Response) => {
   }
   const newUser = await service.createUser(req.body)
   const data = {
+    id: newUser._id,
     email: newUser.email,
     name: newUser.name,
   }
@@ -52,8 +53,8 @@ const getCurrent = async (req: IRequest, res: Response) => {
   if (!req.user) {
     throw HttpError(401)
   }
-  const { email, name } = req.user
-  sendSuccessRes(res, { email, name })
+  const { _id: id, email, name } = req.user
+  sendSuccessRes(res, { id, name, email })
 }
 
 const logout = async (req: IRequest, res: Response) => {

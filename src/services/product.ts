@@ -51,12 +51,12 @@ const populateProduct = (query: any) => {
 }
 
 const findProducts = async (query: any, skip?: number, limit?: number) => {
-  query.select('-createdAt -updatedAt').skip(skip).limit(limit)
+  query.skip(skip).limit(limit)
   return await populateProduct(query)
 }
 
 export const findAllProducts = async (skip?: number, limit?: number) => {
-  const query = Product.find({})
+  const query = Product.find({}, '-createdAt -updatedAt')
   return await findProducts(query, skip, limit)
 }
 
@@ -71,7 +71,7 @@ export const findProductsByCategory = async (
   skip?: number,
   limit?: number,
 ) => {
-  const query = Product.find({ categories: category })
+  const query = Product.find({ categories: category }, '-createdAt -updatedAt')
 
   if (price) {
     const [minPrice, maxPrice] = price.split('_')
@@ -107,7 +107,7 @@ export const findProductsByCategory = async (
 }
 
 export const findOneProduct = async (product: string) => {
-  const query = Product.findOne({ url: product })
+  const query = Product.findOne({ url: product }, '-createdAt -updatedAt')
   return await populateProduct(query)
 }
 
