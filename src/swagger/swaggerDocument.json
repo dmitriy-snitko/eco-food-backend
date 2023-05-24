@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Eco-Shoop OpenApi specification",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "servers": [
     {
@@ -245,7 +245,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Product"
+                  "$ref": "#/components/schemas/OneProduct"
                 }
               }
             }
@@ -273,6 +273,69 @@
               "type": "string"
             },
             "example": "dried-fruits"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of products per page (default: 20)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 20
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Country ID (used to filter products by country) for multiple selection use \"_\" (6463cc86a1290a70677fa0f5_642dda4fe42ee57de3e9e0ca)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "645f961a434c323f287affa5"
+          },
+          {
+            "name": "availability",
+            "in": "query",
+            "description": "Availability ID (used to filter products by availability) for multiple selection use \"_\"",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6463cc86a1290a70677fa0f5"
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "description": "Brand ID (used to filter products by brand) for multiple selection use \"_\"",
+            "schema": {
+              "type": "string"
+            },
+            "example": "645bb6b7a5fe761dbb3f6f68"
+          },
+          {
+            "name": "form",
+            "in": "query",
+            "description": "Form ID (used to filter products by packaging) for multiple selection use \"_\"",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6463a40ddbcd4375578ae45b"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "Minimum and maximum price of products (used to filter products by price)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "4_11"
           }
         ],
         "responses": {
@@ -288,6 +351,155 @@
           },
           "404": {
             "description": "Category not found"
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "summary": "Get reviews by user",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "getReviewsByOwner",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of reviews per page (default: 20)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 20
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reviews"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/reviews/{product_url}": {
+      "get": {
+        "summary": "Get reviews by product",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "getByProduct",
+        "parameters": [
+          {
+            "name": "product_url",
+            "in": "path",
+            "required": true,
+            "description": "Url of Product",
+            "schema": {
+              "type": "string"
+            },
+            "example": "dried-apricots-elegant"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of reviews per page (default: 20)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reviews"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/reviews/add": {
+      "post": {
+        "summary": "Method for adding reviews",
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "addReview",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Feedback data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReview"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Product not found"
           }
         }
       }
@@ -543,7 +755,7 @@
           }
         }
       },
-      "Product": {
+      "OneProduct": {
         "type": "object",
         "properties": {
           "product": {
@@ -670,36 +882,62 @@
           }
         }
       },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "646d26d025baf5934fc442ab"
+          },
+          "text": {
+            "type": "string",
+            "example": "Some product review"
+          },
+          "score": {
+            "type": "number",
+            "example": 4
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "64411b97a5f7c71fbe6c24dc"
+              },
+              "name": {
+                "type": "string",
+                "example": "User"
+              }
+            }
+          }
+        }
+      },
       "Reviews": {
         "type": "array",
         "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "example": "646d26d025baf5934fc442ab"
-            },
-            "text": {
-              "type": "string",
-              "example": "some product review"
-            },
-            "score": {
-              "type": "number",
-              "example": 4
-            },
-            "owner": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "example": "64411b97a5f7c71fbe6c24dc"
-                },
-                "name": {
-                  "type": "string",
-                  "example": "User"
-                }
-              }
-            }
+          "$ref": "#/components/schemas/Review"
+        }
+      },
+      "AddReview": {
+        "type": "object",
+        "required": [
+          "text",
+          "score",
+          "product"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "Some product review"
+          },
+          "score": {
+            "type": "number",
+            "example": 4
+          },
+          "product": {
+            "type": "string",
+            "description": "The URL of the product being reviewed",
+            "example": "dried-apricots-elegant"
           }
         }
       }
