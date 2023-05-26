@@ -1,4 +1,27 @@
 services:
-  - type: web
-    buildCommand: yarn build
-    staticPublishPath: build
+  - name: eco-food
+    # Замените `start` на вашу команду запуска сервера
+    startCommand: npm start
+
+    # Добавьте зависимость на TypeScript внутри контейнера
+    buildCommand: npm install && npm install typescript
+
+    # Добавьте команду компиляции TypeScript
+    buildCommand: npx tsc
+
+    # Укажите путь к скомпилированным файлам TypeScript
+    # Если ваш путь отличается, замените его на нужный
+    env:
+      - key: TS_NODE_PROJECT
+        value: ./tsconfig.json
+
+    # Путь к папке, где расположены скомпилированные файлы
+    # Если ваш путь отличается, замените его на нужный
+    env:
+      - key: NODE_PATH
+        value: ./dist
+
+    # Установка окружения для выполнения TypeScript
+    env:
+      - key: NODE_ENV
+        value: production

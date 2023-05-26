@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc -p tsconfig.json",
-    "start": "npm run build && node build/bin/server.js",
+    "start": "npm run build && node dist/bin/server.js",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"
   },
