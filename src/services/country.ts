@@ -1,5 +1,5 @@
 import { Country } from "../models/country.js";
 
-export const findAllCountrys = async () => {
+export const findAllCountries = async () => {
   return await Country.find({}, '-createdAt -updatedAt');
 }

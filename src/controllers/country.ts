@@ -3,11 +3,11 @@ import * as service from '../services/country.js'
 import { sendSuccessRes } from '../helpers/sendSuccessRes.js'
 import { ctrlWrapper } from '../helpers/index.js'
 
-const getAllCountrys = async (req: Request, res: Response) => {
-  const data = await service.findAllCountrys()
+const getAllCountries = async (req: Request, res: Response) => {
+  const data = await service.findAllCountries()
   sendSuccessRes(res, data)
 }
 
 export default {
-  getAllCountrys: ctrlWrapper(getAllCountrys),
+  getAllCountries: ctrlWrapper(getAllCountries),
 }

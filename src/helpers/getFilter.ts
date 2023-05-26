@@ -9,10 +9,10 @@ export const getFilter = (data: IProduct[]) => {
   }
 
   const brands = Array.from(new Set(data.map((i) => i.brand)))
-  const countrys = Array.from(new Set(data.map((i) => i.country)))
+  const countries = Array.from(new Set(data.map((i) => i.country)))
   const form = Array.from(new Set(data.map((i) => i.form)))
   const availability = Array.from(new Set(data.map((i) => i.availability)))
   const delivery = Array.from(new Set(data.map((i) => i.delivery)))
 
-  return { price, brands, countrys, form, availability, delivery }
+  return { price, brands, countries, form, availability, delivery }
 }

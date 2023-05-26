@@ -812,7 +812,7 @@
               }
             }
           },
-          "countrys": {
+          "countries": {
             "type": "array",
             "items": {
               "type": "object",
