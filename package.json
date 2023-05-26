@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "npx nodemon",
-    "start": "node build/bin/server.js",
+    "start": "node bin/server.js",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"
   },
