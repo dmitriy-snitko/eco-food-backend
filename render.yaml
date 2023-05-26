@@ -1,2 +1,4 @@
-buildCommand: yarn build
-staticPublishPath: build
+services:
+  - type: web
+    buildCommand: yarn build
+    staticPublishPath: build
