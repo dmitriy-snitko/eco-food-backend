@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "npx nodemon",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "start": "npm run build && node build/bin/server.js",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"
