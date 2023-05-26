@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc -p tsconfig.json",
+    "build": "yarn && tsc -p tsconfig.json",
     "start": "yarn build && node dist/bin/server.js",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"
