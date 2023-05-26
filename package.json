@@ -8,9 +8,8 @@
     }
   },
   "scripts": {
-    "dev": "npx nodemon",
-    "clean": "rimraf build/*",
-    "build": "npm run clean && npx tsc",
+    "dev": "nodemon",
+    "build": "tsc -p tsconfig.json",
     "start": "npm run build && node build/bin/server.js",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix"
