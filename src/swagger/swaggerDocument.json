@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://eco-food-backend-production.up.railway.app/api/",
+      "url": "https://eco-food.onrender.com/api/",
       "description": "Production server"
     },
     {
