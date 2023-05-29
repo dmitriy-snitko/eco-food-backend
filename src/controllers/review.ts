@@ -16,7 +16,7 @@ const addReview = async (req: IRequest, res: Response) => {
     return acc + val.score
   }, 0)
 
-  const rating = sum / reviews.length
+  const rating = parseFloat((sum / reviews.length).toFixed(1))
   await services.updateRating(product, rating)
   sendSuccessRes(res, newReview, 201, 'created')
 }
