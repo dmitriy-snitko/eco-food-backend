@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://eco-food.onrender.com/api/",
+      "url": "https://eco-food-backend-production.up.railway.app/api/",
       "description": "Production server"
     },
     {
@@ -206,6 +206,26 @@
           "Products"
         ],
         "operationId": "getAllProducts",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of products per page (default: 20)",
+            "schema": {
+              "type": "number"
+            },
+            "example": 20
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response with product list",
@@ -336,6 +356,15 @@
               "type": "string"
             },
             "example": "4_11"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "product sorting options (relevancy, price-up, price-down, rating)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "relevancy"
           }
         ],
         "responses": {
@@ -812,7 +841,7 @@
               }
             }
           },
-          "countries": {
+          "countrys": {
             "type": "array",
             "items": {
               "type": "object",

@@ -1,38 +1,30 @@
-// import { Product } from '../models/product.js'
-
-// const populateProduct = (query: any) => {
-//   return query
-//     .populate({
-//       path: 'brand form availability',
-//       select: 'name',
-//     })
-//     .populate({
-//       path: 'country',
-//       select: ['name', 'code'],
-//     })
-// }
-
-// export const findAllProducts = async (skip?: number, limit?: number) => {
-//   const query = Product.find({}, '-createdAt -updatedAt', { skip, limit })
-//   return await populateProduct(query)
-// }
-
-// export const findProductsByCategory = async (category: string, price?: string, filter?: any, skip?: number, limit?: number) => {
-//   if (price) {
-//     const minMaxPrice = price.split('_')
-//     const query = Product.find({ categories: category, $and: [ { price: { $gte: minMaxPrice[0] } }, { price: { $lte: minMaxPrice[1] } } ], ...filter }, '-createdAt -updatedAt', { skip, limit })
-//     return await populateProduct(query)
-//   }
-//   const query = Product.find({ categories: category, ...filter }, '-createdAt -updatedAt', { skip, limit })
-//   return await populateProduct(query)
-// }
-
-// export const findOneProduct = async (product: string) => {
-//   const query = Product.findOne({ url: product }, '-createdAt -updatedAt')
-//   return await populateProduct(query)
-// }
-
 import { Product } from '../models/product.js'
+import { IProduct } from '../types/index.js'
+
+const getSortedProducts = (products: IProduct[], sortValue?: string) => {
+  if (sortValue === 'relevancy') {
+    return products.sort((a, b) => b.oldPrice - a.oldPrice)
+  }
+
+  if (sortValue === 'price-down') {
+    return products.sort((a, b) => b.price - a.price)
+  }
+
+  if (sortValue === 'price-up') {
+    return products.sort((a, b) => a.price - b.price)
+  }
+
+  if (sortValue === 'rating') {
+    return products.sort((a, b) => b.rating - a.rating)
+  }
+
+  return products.sort((a, b) => b.oldPrice - a.oldPrice)
+}
+
+function getPaginateProducts(products: IProduct[], skip: number, limit: number) {
+  const endIndex = skip + limit
+  return products.slice(skip, endIndex)
+}
 
 const populateProduct = (query: any) => {
   return query
@@ -62,14 +54,15 @@ export const findAllProducts = async (skip?: number, limit?: number) => {
 
 export const findProductsByCategory = async (
   category: string,
+  skip: number,
+  limit: number,
   price?: string,
   brand?: string,
   country?: string,
   form?: string,
   availability?: string,
   delivery?: string,
-  skip?: number,
-  limit?: number,
+  sortBy?: string,
 ) => {
   const query = Product.find({ categories: category }, '-createdAt -updatedAt')
 
@@ -103,7 +96,11 @@ export const findProductsByCategory = async (
     query.find({ availability: { $in: availabilityList } })
   }
 
-  return await findProducts(query, skip, limit)
+  const products: IProduct[] = await findProducts(query)
+  const sortedProducts = getSortedProducts(products, sortBy)
+  const paginateProducts = getPaginateProducts(sortedProducts, skip, limit)
+
+  return paginateProducts
 }
 
 export const findOneProduct = async (product: string) => {
@@ -111,6 +108,6 @@ export const findOneProduct = async (product: string) => {
   return await populateProduct(query)
 }
 
-export const updateRating = async(product: string, rating: number) => {
-  return Product.updateOne({url: String(product)}, {$set: {rating}})
+export const updateRating = async (product: string, rating: number) => {
+  return Product.updateOne({ url: String(product) }, { $set: { rating } })
 }

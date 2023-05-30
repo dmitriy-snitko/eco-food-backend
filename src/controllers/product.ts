@@ -17,9 +17,6 @@ const getProductsByCategory = async (req: Request, res: Response) => {
     throw HttpError(404, `Category whith url: '${categoryUrl}' not found.`)
   }
 
-  const allProductsInCanegory = await service.findProductsByCategory(categoryUrl)
-  const filterValues = getFilter(allProductsInCanegory)
-
   const {
     page = 1,
     limit = 20,
@@ -28,7 +25,8 @@ const getProductsByCategory = async (req: Request, res: Response) => {
     country,
     form,
     availability,
-    delivery
+    delivery,
+    sortBy = "relevancy"
   }: {
     price?: string
     brand?: string
@@ -38,18 +36,25 @@ const getProductsByCategory = async (req: Request, res: Response) => {
     delivery?: string
     page?: number
     limit?: number
+    sortBy?: string
   } = req.query
+
   const skip = (page - 1) * limit
+
+  const allProductsInCanegory = await service.findProductsByCategory(categoryUrl, skip, limit)
+  const filterValues = getFilter(allProductsInCanegory)
+
   const products = await service.findProductsByCategory(
     categoryUrl,
+    skip,
+    limit,
     price,
     brand,
     country,
     form,
     availability,
     delivery,
-    skip,
-    limit,
+    sortBy
   )
   sendSuccessRes(res, { products, filter: filterValues })
 }
