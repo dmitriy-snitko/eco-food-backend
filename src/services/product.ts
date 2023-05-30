@@ -52,6 +52,11 @@ export const findAllProducts = async (skip?: number, limit?: number) => {
   return await findProducts(query, skip, limit)
 }
 
+export const findAllProductsInCategory = async (category: string) => {
+  const query = Product.find({ categories: category }, '-createdAt -updatedAt')
+  return await findProducts(query)
+}
+
 export const findProductsByCategory = async (
   category: string,
   skip: number,

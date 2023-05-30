@@ -41,7 +41,7 @@ const getProductsByCategory = async (req: Request, res: Response) => {
 
   const skip = (page - 1) * limit
 
-  const allProductsInCanegory = await service.findProductsByCategory(categoryUrl, skip, limit)
+  const allProductsInCanegory = await service.findAllProductsInCategory(categoryUrl)
   const filterValues = getFilter(allProductsInCanegory)
 
   const products = await service.findProductsByCategory(
