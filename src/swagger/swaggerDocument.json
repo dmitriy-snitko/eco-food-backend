@@ -360,7 +360,7 @@
           {
             "name": "sortBy",
             "in": "query",
-            "description": "product sorting options (relevancy, price-up, price-down, rating)",
+            "description": "product sorting options (relevancy, price-up, price-down, rating). Default: relevancy",
             "schema": {
               "type": "string"
             },
