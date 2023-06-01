@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import * as service from '../services/index.js'
-import { sendSuccessRes, getFilter } from '../helpers/index.js'
-import { ctrlWrapper } from '../helpers/index.js'
-import { HttpError } from '../helpers/index.js'
+import { sendSuccessRes, getFilter, ctrlWrapper, HttpError } from '../helpers/index.js'
 
 const getAllProducts = async (req: Request, res: Response) => {
   const { page = 1, limit = 20 }: { page?: number; limit?: number } = req.query
@@ -26,7 +24,7 @@ const getProductsByCategory = async (req: Request, res: Response) => {
     form,
     availability,
     delivery,
-    sortBy = "relevancy"
+    sortBy = 'relevancy',
   }: {
     price?: string
     brand?: string
@@ -44,19 +42,23 @@ const getProductsByCategory = async (req: Request, res: Response) => {
   const allProductsInCanegory = await service.findAllProductsInCategory(categoryUrl)
   const filterValues = getFilter(allProductsInCanegory)
 
-  const products = await service.findProductsByCategory(
-    categoryUrl,
-    skip,
-    limit,
-    price,
-    brand,
-    country,
-    form,
-    availability,
-    delivery,
-    sortBy
-  )
-  sendSuccessRes(res, { products, filter: filterValues })
+  try {
+    const products = await service.findProductsByCategory(
+      categoryUrl,
+      skip,
+      limit,
+      price,
+      brand,
+      country,
+      form,
+      availability,
+      delivery,
+      sortBy,
+    )
+    sendSuccessRes(res, { products, filter: filterValues })
+  } catch (error: any) {
+    throw HttpError(400, error.message)
+  }
 }
 
 const getOneProduct = async (req: Request, res: Response) => {
